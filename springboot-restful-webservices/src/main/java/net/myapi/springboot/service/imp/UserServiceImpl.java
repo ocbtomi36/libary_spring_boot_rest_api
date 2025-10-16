@@ -63,18 +63,23 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepository.findById(userRequestDto.getUserId()).orElseThrow(
                 () -> new ResourceNotFoundException("User", "id", userRequestDto.getUserId().longValue())
         );
-        // existingUser az amit behozok az id alapján. Kell egy user objektum amely email alapján jön és egy egy amely a név alapján jön.
         Optional<User> optionalEmailUser = userRepository.findByEmail(userRequestDto.getEmail());
         Optional<User> optionalNameUser = userRepository.findByName(userRequestDto.getName());
+        Optional<User> optionalUserName = userRepository.findByUserName(userRequestDto.getUserName());
         if (optionalEmailUser.isPresent() &&
                 !optionalEmailUser.get().getIdUser().equals(userRequestDto.getUserId())) {
-            throw new DataAlreadyExistException("Email already exists in database");
+            throw new DataAlreadyExistException("Email is already exists in database");
         }
         if (optionalNameUser.isPresent() &&
                 !optionalNameUser.get().getIdUser().equals(userRequestDto.getUserId())) {
-            throw new DataAlreadyExistException("Name already exists in database");
+            throw new DataAlreadyExistException("Name is already exists in database");
+        }
+        if (optionalUserName.isPresent() &&
+                !optionalUserName.get().getIdUser().equals(userRequestDto.getUserId())) {
+            throw new DataAlreadyExistException("This username is already exists in database");
         }
         existingUser.setName(userRequestDto.getName());
+        existingUser.setUserName(userRequestDto.getUserName());
         existingUser.setEmail(userRequestDto.getEmail());
         existingUser.setPassword(userRequestDto.getPassword());
         User updatingUser = userRepository.save(existingUser);
