@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -18,6 +19,10 @@ public class User {
     @Column(name = "name", length = 100, nullable = false, unique = true)
     @NotNull
     private String name;
+
+    @Column(name = "user_name", length = 100, nullable = false, unique = true)
+    @NotNull
+    private String userName;
 
     @Column(name = "email", length = 100, nullable = false, unique = true)
     @NotNull
@@ -34,10 +39,17 @@ public class User {
             fetch = FetchType.LAZY)
     private List<Transaction> transactions;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "users_roles",
+                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "idUser"),
+                inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "idRole"))
+    private Set<Role> roles;
+
     public User(){}
 
-    public User(String name, String email, String password, LocalDateTime registrationDate) {
+    public User(String name, String userName, String email, String password, LocalDateTime registrationDate) {
         this.name = name;
+        this.userName = userName;
         this.email = email;
         this.password = password;
         this.registrationDate = registrationDate;
@@ -57,6 +69,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getEmail() {

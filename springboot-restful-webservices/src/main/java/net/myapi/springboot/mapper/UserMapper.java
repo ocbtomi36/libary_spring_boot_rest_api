@@ -8,13 +8,11 @@ import java.time.LocalDateTime;
 
 public class UserMapper {
 
-    // Requestből usert gyártani
-    // Userbol response-t
-// String name, String email, String password, LocalDateTime registrationDate
     public static User mapToUser(UserRequestDto userRequestDto){
 
         User user = new User(
                 userRequestDto.getName(),
+                userRequestDto.getUserName(),
                 userRequestDto.getEmail(),
                 userRequestDto.getPassword(),
                 LocalDateTime.now()

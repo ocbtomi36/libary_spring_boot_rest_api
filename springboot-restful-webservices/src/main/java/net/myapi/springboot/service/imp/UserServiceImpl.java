@@ -31,6 +31,8 @@ public class UserServiceImpl implements UserService {
         FieldValidator.dataAlreadyExistValidate(optionalEmail,"Email");
         Optional<User> optionalName = userRepository.findByName(userRequestDto.getName());
         FieldValidator.dataAlreadyExistValidate(optionalName,"Name");
+        Optional<User> optionalUserName = userRepository.findByUserName(userRequestDto.getUserName());
+        FieldValidator.dataAlreadyExistValidate(optionalUserName, "User Name");
         User user = UserMapper.mapToUser(userRequestDto);
         User savedUser = userRepository.save(user);
         UserResponseDto savedUserResponseDto = UserMapper.mapToUserResponseDto(savedUser);

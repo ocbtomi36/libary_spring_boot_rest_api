@@ -25,6 +25,7 @@ public class UserController {
             throw new IllegalArgumentException("user can't be null");
         }
         FieldValidator.notNullFieldValidate(user.getName(),"Name",100);
+        FieldValidator.notNullFieldValidate(user.getUserName(), "UserName",100);
         FieldValidator.emailValidate(user.getEmail());
         FieldValidator.notNullFieldValidate(user.getPassword(),"Password",100);
     }
